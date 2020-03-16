@@ -1,91 +1,30 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>ES6 Pong Game</title>
+    <!--my style-->
+    <link rel="stylesheet" href="style.css" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>ES6 Pong Game</title>
-  <!--my style-->
-  <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    />
+    <!-- Bootstrap core CSS -->
+  </head>
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
-  <!-- Bootstrap core CSS -->
-
-
-</head>
-
-<body>
-
-
-
-  <div class="topnav" id="myTopnav">
-    <a href="#home" class="active">Home</a>
-    <a href="#pong">Play</a>
-    <a href="#about">About</a>
-    <a href="https://github.com/codyswick/ES6-pong"target='_blank'>View Code</a>
-    <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-      <i class="fa fa-bars"></i>
-    </a>
-  </div>
-  <div class="hero-image">
-  </div>
-
-
-
-
-
-  <h1>Pong</h1>
-  <hr>
-  <div class='canvas-div'>
-
-    <canvas id='pong' width="900" height="400"></canvas>
-    <script type="text/javascript" <script src="pong.js"></script>
-
-    </script>
-  </div>
-
-  <div id='about'class='wrap'>
-    <h2>About</h2>
-    <hr>
-    <div class="turkey">
-      <p>Pong is one of the earliest arcade video games. It is a table tennis sports game featuring simple two-dimensional graphics. The game was originally manufactured by Atari, which released it in 1972. Allan Alcorn created Pong as a training
-        exercise assigned to him by Atari co-founder Nolan Bushnell. Bushnell based the idea on an electronic ping-pong game included in the Magnavox Odyssey; Magnavox later sued Atari for patent infringement. Bushnell and Atari co-founder Ted Dabney
-        were surprised by the quality of Alcorn's work and decided to manufacture the game. </p>
-
+  <body>
+    <h1>Pong</h1>
+    <hr />
+    <div class="canvas-div">
+      <canvas id="pong" width="900" height="400"></canvas>
+      <script type="module" src="pong.js"></script>
     </div>
-  </div>
-  <footer>
-    <div class='header' id='bottom'>
-    <!-- setting list links-->
-    <ul>
-      <li></li>
-      <li></li>
-      <li><a href="#">Back To Top</a></li>
-
-    </ul>
-
-  </div>
-  </footer>
-
-</body>
-<script>
-  function myFunction() {
-    var x = document.getElementById("myTopnav");
-
-
-
-    if (x.className === "topnav") {
-      x.className += " responsive";
-
-
-
-    } else {
-      x.className = "topnav";
-    }
-  }
-</script>
-
+  </body>
 </html>
-<!--https://www.youtube.com/watch?v=ju09womACpQ-->
