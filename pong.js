@@ -8,8 +8,8 @@ class Pong {
     this._context = canvas.getContext("2d");
     this.ball = new Ball();
 
-    this.pongAI = new PongAI();
     this.players = [new Player(), new Player()];
+    this.pongAI = new PongAI(this._canvas.height, this.players[1].size.y);
     // set player 1 position
     this.players[0].pos.x = 40;
     // set player 2 position
@@ -58,6 +58,18 @@ class Pong {
     //draws canvas
     this._context.fillStyle = "#1c1d25";
     this._context.fillRect(0, 0, this._canvas.width, this._canvas.height);
+    this._context.fillStyle = "red";
+    this._context.font = "30px Arial";
+    this._context.fillText(
+      `Round ${this.players[0].score + this.players[1].score + 1}`,
+      this._canvas.width / 2,
+      this._canvas.height / 5 - 30
+    );
+    this._context.fillText(
+      `${this.players[0].score} - ${this.players[1].score}`,
+      this._canvas.width / 2,
+      this._canvas.height / 5
+    );
 
     this.drawRect(this.ball);
     this.players.forEach(player => this.drawRect(player));

@@ -31,11 +31,11 @@ class QLearningAgent {
 
   // Find best action in a state
   maxAction(state) {
-    let bestValue = -10;
+    let bestValue = -Infinity;
     this.initializeState(state);
 
     // find best action in state and the corresponding value
-    this.Q[state].forEach(action => {
+    Object.keys(this.Q[state]).forEach(action => {
       if (this.Q[state][action] > bestValue) {
         bestValue = this.Q[state][action];
       }
@@ -45,7 +45,7 @@ class QLearningAgent {
   }
 
   nextAction(state) {
-    let bestValue = -10;
+    let bestValue = -Infinity;
     let bestAction = null;
 
     if (!(state in this.Q)) {
@@ -78,13 +78,17 @@ class QLearningAgent {
 
   // Ensure convergence
   stepSize(n) {
-    return 60 / (59 + n);
+    return 0.9;
+    // return 600 / (599 + n);
+    // return 60 / (59 + n);
   }
 
   // Make the agent do some exploration
   explore(u, n) {
-    if (n < 10) {
-      return 1;
+    // return u;
+    if (n < 2) {
+      // return Math.random() > 0.1 ? 100 : u;
+      return 100;
     }
 
     return u;
@@ -101,7 +105,7 @@ class QLearningAgent {
 
   // Find argument that maximizes the function
   getAction({ currentState, reward }) {
-    if (this.state) {
+    if (this.s) {
       this.incrementN(this.s, this.a);
       this.updateQ(this.s, this.a, this.r, currentState);
     }
@@ -109,43 +113,72 @@ class QLearningAgent {
     this.s = currentState;
     this.r = reward;
     this.a = this.nextAction(currentState);
-
+    if (!this.a) {
+      console.log(this.Q);
+      console.log(this.N);
+      console.log(currentState);
+      throw new Error("action is null");
+    }
     return this.a;
   }
 }
 
 class PongAI {
-  constructor(height) {
-    const actions = ["up", "down"];
+  constructor(boardHeight, playerHeight) {
+    const actions = ["up", "down", "stop"];
     this.agent = new QLearningAgent(actions);
     this.scores = [0, 0];
-    this.boardHeight = height;
+    this.boardHeight = boardHeight;
+    // Size of state space is sections^2
+    this.sections = 30;
+    this.movementSpeed = Math.floor(this.boardHeight / this.sections);
   }
 
-  getNextPosition(ballPosY, paddlePosY, scores, ballhit) {
+  // divide board into sections to speed up learning (reduce number of states)
+  adjustPosition(y) {
+    const adjusted =
+      Math.floor((y * this.sections) / this.boardHeight) *
+      Math.floor(this.boardHeight / this.sections);
+    return adjusted;
+  }
+
+  getNextPosition(ballPosY, playerPosY, scores, ballhit) {
     let reward = 0;
 
+    // give some reward for scoring a point
     if (this.scores[1] < scores[1]) {
       reward = 5;
+      // give big punishment for letting opponent get a point
     } else if (this.scores[0] < scores[0]) {
-      reward = -100;
+      reward = -2;
     }
 
+    this.scores = scores;
+
+    // Blocking a ball gives high reward
     if (ballhit) {
-        reward += 200
+      reward += 1;
     }
 
     const action = this.agent.getAction({
-      currentState: [ballPosY, paddlePosY],
+      currentState: [
+        this.adjustPosition(ballPosY),
+        this.adjustPosition(playerPosY)
+      ],
       reward
     });
 
+    // console.log(reward, action, playerPosY);
+    if (isNaN(playerPosY)) {
+      throw new Error(`${playerPosY} not a number`);
+    }
+
     if (action === "up") {
-      return paddlePosY - 1;
+      return Math.max(playerPosY - this.movementSpeed, 50);
     } else if (action === "down") {
-      return paddlePosY + 1;
-    } else {
-      return paddlePosY;
+      return Math.min(playerPosY + this.movementSpeed, this.boardHeight - 50);
+    } else if (action === "stop") {
+      return playerPosY;
     }
   }
 }
